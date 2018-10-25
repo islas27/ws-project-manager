@@ -1,13 +1,12 @@
 <template>
-  <HelloWorld />
+  <v-container fluid fill-height>
+    <v-layout justify-center align-center>
+      <h1>Hello World</h1>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
-  import HelloWorld from '../components/HelloWorld'
-
-  export default {
-    components: {
-      HelloWorld
-    }
-  }
+export default {
+}
 </script>

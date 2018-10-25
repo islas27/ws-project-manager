@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height>
     <v-layout justify-center align-center>
-      <h1>About</h1>
+      <h1>Chats</h1>
     </v-layout>
   </v-container>
 </template>
