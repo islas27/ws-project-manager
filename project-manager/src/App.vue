@@ -19,9 +19,14 @@
 
 <script>
 import NavigationDrawer from '@/components/NavigationDrawer'
+import dummyData from '@/starter'
 export default {
   name: 'App',
   components: { NavigationDrawer },
+  beforeMount () {
+    // Loading dummydata
+    this.$store.commit('devData', dummyData)
+  },
   data: () => ({
     drawer: true
   }),
