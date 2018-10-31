@@ -19,6 +19,7 @@ export default new Vuex.Store({
     me: state => state.user.id,
     getUserById: state => id => state.team[id],
     getTaskById: state => id => state.tasks[id],
+    getDataAsArray: state => stateKey => Object.keys(state[stateKey]).map(key => ({ id: key, ...state[stateKey][key] })),
     getDisplayedTask: state => state.tasks[state.displayTask] || {},
     getUnselectedUsers: state => {
       const selected = (state.tasks[state.displayTask] || {}).asignee
@@ -45,6 +46,10 @@ export default new Vuex.Store({
     addProject (state, project) {
       const key = generateKey()
       Vue.set(state.projectList, key, project)
+    },
+    updateProject (state, payload) {
+      const project = { ...state.project, ...payload }
+      Vue.set(state, 'project', project)
     },
     addTeamMembers (state, user) {
       Vue.set(state.team, user.id, user)

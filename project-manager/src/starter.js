@@ -11,13 +11,15 @@ export default {
   projectList: {
     '123': {
       name: 'My Start-up',
-      avatar: 'https://placeimg.com/640/640/tech'
+      avatar: 'https://placeimg.com/640/640/tech',
+      description: 'We plan to rule the world'
     }
   },
   project: {
     projectId: '123',
     name: 'My Start-up',
-    avatar: 'https://placeimg.com/640/640/tech'
+    avatar: 'https://placeimg.com/640/640/tech',
+    description: 'We plan to rule the world'
   },
   team: {
     'abx': {
