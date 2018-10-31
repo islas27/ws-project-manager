@@ -22,6 +22,9 @@ export default {
     tasks () {
       return this.$store.state.tasks
     }
+  },
+  mounted () {
+    this.$store.dispatch('trackTasks')
   }
 }
 </script>

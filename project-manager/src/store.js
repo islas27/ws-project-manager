@@ -3,9 +3,14 @@ import Vuex from 'vuex'
 import firebase from 'firebase/app'
 import config from './config'
 require('firebase/auth')
-// require('firebase/firestore')
+require('firebase/firestore')
 
 firebase.initializeApp(config)
+const db = firebase.firestore()
+// Disable deprecated features
+db.settings({
+  timestampsInSnapshots: true
+})
 
 Vue.use(Vuex)
 
@@ -14,6 +19,7 @@ const generateKey = () => Math.random().toString(36).substr(2, 5)
 export default new Vuex.Store({
   state: {
     auth: firebase.auth,
+    db,
     observers: {},
     user: {},
     userSettings: {},
@@ -28,8 +34,9 @@ export default new Vuex.Store({
     getUserById: state => id => state.team[id],
     getTaskById: state => id => state.tasks[id],
     getDataAsArray: state => stateKey => Object.keys(state[stateKey]).map(key => ({ id: key, ...state[stateKey][key] })),
-    getDisplayedTask: state => state.tasks[state.displayTask] || {},
+    getDisplayedTask: state => (state.tasks || {})[state.displayTask] || {},
     getUnselectedUsers: state => {
+      if (state.displayTask === '') return []
       const selected = (state.tasks[state.displayTask] || {}).asignee
       const unselectedIds = Object.keys(state.team)
         .filter(userId => (selected || []).indexOf(userId) === -1)
@@ -59,11 +66,14 @@ export default new Vuex.Store({
       unsubscribe()
       Vue.set(state, 'observers', observersToKeep)
     },
-    addTask (state, payload) {
-      const key = generateKey()
-      const task = { date: '', notes: '', asignee: [], done: false, ...payload }
-      Vue.set(state.tasks, key, task)
+    displayTask (state, key) {
       state.displayTask = key
+    },
+    addTaskList (state, taskList) {
+      Vue.set(state, 'tasks', taskList)
+    },
+    addUserList (state, userList) {
+      Vue.set(state, 'users', userList)
     },
     updateTask (state, { taskId, task }) {
       Vue.set(state.tasks, taskId, task)
@@ -137,6 +147,47 @@ export default new Vuex.Store({
         })
         .catch(function (error) {
           console.log(error)
+        })
+    },
+    trackTasks ({ state, commit }) {
+      db.collection('tasks')
+        .onSnapshot(function (collection) {
+          const tasksIds = collection.docs.map(task => task.id)
+          const taskList = tasksIds.reduce((obj, taskId) => {
+            obj[taskId] = collection.docs.filter(task => task.id === taskId)[0].data()
+            return obj
+          }, {})
+          commit('addTaskList', taskList)
+        })
+    },
+    addTask ({ state, commit }, newTask) {
+      const task = { date: '', notes: '', asignee: [], done: false, ...newTask }
+      state.db.collection('tasks').add(task)
+        .then(function (docRef) {
+          commit('displayTask', docRef.id)
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+    },
+    updateTask ({ state, commit }, { taskId, update }) {
+      state.db.collection('tasks').doc(taskId).update(update)
+        .then(function (docRef) {
+          console.log('success updating task')
+        })
+        .catch(function (error) {
+          console.error(error)
+        })
+    },
+    trackUsers ({ state, commit }) {
+      db.collection('users')
+        .onSnapshot(function (collection) {
+          const userIds = collection.docs.map(user => user.uid)
+          const userList = userIds.reduce((obj, userId) => {
+            obj[userId] = collection.docs.filter(user => user.uid === userId)[0].data()
+            return obj
+          }, {})
+          commit('addUserList', userList)
         })
     }
   }

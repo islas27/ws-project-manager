@@ -94,9 +94,8 @@ export default {
   methods: {
     updateTask (section) {
       if (this.inputContent.length === 0) return
-      const updatedTask = { ...this.task }
-      updatedTask[section] = this.inputContent
-      this.$store.commit('updateTask', { taskId: this.taskId, task: updatedTask })
+      debugger
+      this.$store.dispatch('updateTask', { taskId: this.taskId, update: { [section]: this.inputContent } })
       this.cancelInput()
     },
     setInput (section) {

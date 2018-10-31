@@ -34,13 +34,13 @@ export default {
   },
   methods: {
     addTask () {
-      this.$store.commit('addTask', this.newTask)
+      this.$store.dispatch('addTask', this.newTask)
       this.clearTask()
     },
     clearTask () {
       this.newTask = {
         title: '',
-        owner: this.me
+        owner: [this.me]
       }
     }
   }

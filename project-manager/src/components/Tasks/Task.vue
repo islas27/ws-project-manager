@@ -9,7 +9,7 @@
       <v-list-tile-sub-title>{{task.notes}}</v-list-tile-sub-title>
     </v-list-tile-content>
     <v-list-tile-avatar>
-      <img :src="avatar" alt="avatar">
+      <img v-if="avatar" :src="avatar" alt="avatar">
     </v-list-tile-avatar>
   </v-list-tile>
 </template>
@@ -26,7 +26,7 @@ export default {
       if (user) {
         return user.avatar
       }
-      return 'https://placeimg.com/640/640/people/'
+      return ''
     }
   },
   methods: {
