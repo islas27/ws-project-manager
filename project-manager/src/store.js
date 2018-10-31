@@ -14,6 +14,7 @@ const generateKey = () => Math.random().toString(36).substr(2, 5)
 export default new Vuex.Store({
   state: {
     auth: firebase.auth,
+    observers: {},
     user: {},
     userSettings: {},
     projectList: {},
@@ -43,6 +44,20 @@ export default new Vuex.Store({
     },
     recordUser (state) {
       Vue.set(state, 'user', state.auth().currentUser)
+    },
+    storeObserver (state, payload) {
+      const key = Object.keys(payload)[0]
+      Vue.set(state.observers, key, payload[key])
+    },
+    dropObserver (state, key) {
+      const unsubscribe = state.observers[key]
+      const observersToKeep = Object.keys(state.observers)
+        .filter(obKey => obKey !== key)
+        .reduce((obj, obKey) => {
+          obj[obKey] = state.observers[obKey]
+        }, {})
+      unsubscribe()
+      Vue.set(state, 'observers', observersToKeep)
     },
     addTask (state, payload) {
       const key = generateKey()
@@ -76,11 +91,12 @@ export default new Vuex.Store({
     // Actions receive a 'context' which is actually made of:
     // { state, rootState, commit, dispatch, getters, rootGetters }
     trackUserSession ({ state, commit }) {
+      if ((state.observers || {}).authUnsubscribe) return
       const auth = state.auth
-      auth().onAuthStateChanged(function () {
-        console.log('called!')
+      const authUnsubscribe = auth().onAuthStateChanged(function () {
         commit('recordUser')
       })
+      commit('storeObserver', { auth: authUnsubscribe })
     },
     createUserWithPassword ({ state, dispatch }, payload) {
       const auth = state.auth
@@ -104,9 +120,14 @@ export default new Vuex.Store({
     },
     logout ({ state, commit }) {
       const auth = state.auth
-      auth().signOut().catch(function (error) {
-        console.log(error)
-      })
+      auth().signOut()
+        .then(function () {
+          commit('dropObserver', 'auth')
+          commit('recordUser')
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
     }
   }
 })
