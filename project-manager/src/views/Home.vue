@@ -22,8 +22,8 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn dark color="red">Google</v-btn>
-            <v-btn dark color="green">Create Account</v-btn>
-            <v-btn dark color="green">Login</v-btn>
+            <v-btn dark color="green" @click="createAccount">Create Account</v-btn>
+            <v-btn dark color="green" @click="login">Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-flex>
@@ -42,6 +42,14 @@ export default {
     return {
       email: '',
       password: ''
+    }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('loginUserWithPassword', { email: this.email, password: this.password })
+    },
+    createAccount () {
+      this.$store.dispatch('createUserWithPassword', { email: this.email, password: this.password })
     }
   }
 }

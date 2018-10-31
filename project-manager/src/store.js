@@ -23,7 +23,7 @@ export default new Vuex.Store({
     displayTask: ''
   },
   getters: {
-    me: state => state.user.id,
+    me: state => (state.user || {}).uid,
     getUserById: state => id => state.team[id],
     getTaskById: state => id => state.tasks[id],
     getDataAsArray: state => stateKey => Object.keys(state[stateKey]).map(key => ({ id: key, ...state[stateKey][key] })),
@@ -40,6 +40,9 @@ export default new Vuex.Store({
       Object.keys(data).forEach(key => {
         state[key] = data[key]
       })
+    },
+    recordUser (state) {
+      Vue.set(state, 'user', state.auth().currentUser)
     },
     addTask (state, payload) {
       const key = generateKey()
@@ -70,6 +73,40 @@ export default new Vuex.Store({
     }
   },
   actions: {
-
+    // Actions receive a 'context' which is actually made of:
+    // { state, rootState, commit, dispatch, getters, rootGetters }
+    trackUserSession ({ state, commit }) {
+      const auth = state.auth
+      auth().onAuthStateChanged(function () {
+        console.log('called!')
+        commit('recordUser')
+      })
+    },
+    createUserWithPassword ({ state, dispatch }, payload) {
+      const auth = state.auth
+      auth().createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(function () {
+          dispatch('trackUserSession')
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    loginUserWithPassword ({ state, dispatch }, payload) {
+      const auth = state.auth
+      auth().signInWithEmailAndPassword(payload.email, payload.password)
+        .then(function () {
+          dispatch('trackUserSession')
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+    },
+    logout ({ state, commit }) {
+      const auth = state.auth
+      auth().signOut().catch(function (error) {
+        console.log(error)
+      })
+    }
   }
 })

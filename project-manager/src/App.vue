@@ -12,10 +12,10 @@
       <v-toolbar-title>My Project Manager</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-sm-and-down">
-        <v-btn v-if="me.id" color="white" flat>
+        <v-btn v-if="me" color="white" flat>
           {{me.fullName}}
         </v-btn>
-        <v-btn v-if="me.id" flat>Log Out</v-btn>
+        <v-btn v-if="me" @click="logout" flat>Log Out</v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-content>
@@ -36,15 +36,20 @@ export default {
   //   this.$store.commit('devData', dummyData)
   // },
   computed: {
-    me () {
+    myInfo () {
       return this.$store.state.user || {}
+    },
+    me () {
+      return this.$store.getters.me
     }
   },
   data: () => ({
     drawer: true
   }),
-  props: {
-    source: String
+  methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    }
   }
 }
 </script>
