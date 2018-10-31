@@ -1,14 +1,18 @@
 <template>
-  <v-container fluid fill-height>
-    <v-layout justify-center align-center>
-      <h1>Tasks</h1>
+  <v-container fill-height grid-list-lg>
+    <v-layout row fill-height>
+      <task-list />
+      <task-detail />
     </v-layout>
   </v-container>
 </template>
 
 <script>
-export default {
+import TaskList from '@/components/Tasks/TaskList'
+import TaskDetail from '@/components/Tasks/TaskDetail'
 
+export default {
+  components: { TaskList, TaskDetail }
 }
 </script>
 

@@ -37,14 +37,14 @@
         <v-list-tile-title>Tasks</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-list-tile :to="`/project/${projectId}/calendar`">
+    <!--<v-list-tile :to="`/project/${projectId}/calendar`">
       <v-list-tile-action>
         <v-icon>fas fa-calendar-alt</v-icon>
       </v-list-tile-action>
       <v-list-tile-content>
         <v-list-tile-title>Calendar</v-list-tile-title>
       </v-list-tile-content>
-    </v-list-tile>
+    </v-list-tile> -->
     <v-list-tile :to="`/project/${projectId}/team`">
       <v-list-tile-action>
         <v-icon>fas fa-users</v-icon>
@@ -53,14 +53,14 @@
         <v-list-tile-title>Team</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-list-tile :to="`/project/${projectId}/chats`">
+    <!-- <v-list-tile :to="`/project/${projectId}/chats`">
       <v-list-tile-action>
         <v-icon>fas fa-comments</v-icon>
       </v-list-tile-action>
       <v-list-tile-content>
         <v-list-tile-title>Chats</v-list-tile-title>
       </v-list-tile-content>
-    </v-list-tile>
+    </v-list-tile> -->
     <v-divider />
     <v-list-tile to="/about">
       <v-list-tile-action>

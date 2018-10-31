@@ -1,3 +1,11 @@
 module.exports = {
-  outputDir: '../public'
+  outputDir: '../public',
+
+  pluginOptions: {
+    moment: {
+      locales: [
+        'en'
+      ]
+    }
+  }
 }
