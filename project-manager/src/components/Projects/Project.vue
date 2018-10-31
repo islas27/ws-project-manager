@@ -19,7 +19,7 @@ export default {
     }
   },
   methods: {
-    selectProject() {
+    selectProject () {
       this.$store.commit('selectProject', this.id)
     }
   }

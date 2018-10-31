@@ -1,6 +1,14 @@
 <template>
   <v-list>
-    <v-list-tile to="/projects">
+    <v-list-tile v-if="!me" to="/">
+      <v-list-tile-action>
+        <v-icon>fas fa-home</v-icon>
+      </v-list-tile-action>
+      <v-list-tile-content>
+        <v-list-tile-title>Home</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
+    <v-list-tile v-if="me" to="/projects">
       <v-list-tile-action>
         <v-icon>fas fa-list-alt</v-icon>
       </v-list-tile-action>
@@ -8,20 +16,12 @@
         <v-list-tile-title>Projects</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-list-tile to="/settings">
-      <v-list-tile-action>
-        <v-icon>fas fa-wrench</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>Settings</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile>
 
-    <v-divider inset />
+    <v-divider v-if="me" inset />
 
-    <v-subheader inset>My Start-up</v-subheader>
+    <v-subheader v-if="project.name" inset>{{project.name}}</v-subheader>
 
-    <v-list-tile :to="`/project/${projectId}/project-dashboard`">
+    <v-list-tile v-if="project.name" :to="`/project/${projectId}/project-dashboard`">
       <v-list-tile-action>
         <v-icon>fas fa-tachometer-alt</v-icon>
       </v-list-tile-action>
@@ -29,7 +29,7 @@
         <v-list-tile-title>Dashboard</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <v-list-tile :to="`/project/${projectId}/tasks`">
+    <v-list-tile v-if="project.name" :to="`/project/${projectId}/tasks`">
       <v-list-tile-action>
         <v-icon>fas fa-clipboard-list</v-icon>
       </v-list-tile-action>
@@ -37,15 +37,7 @@
         <v-list-tile-title>Tasks</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <!--<v-list-tile :to="`/project/${projectId}/calendar`">
-      <v-list-tile-action>
-        <v-icon>fas fa-calendar-alt</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>Calendar</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile> -->
-    <v-list-tile :to="`/project/${projectId}/team`">
+    <v-list-tile v-if="project.name" :to="`/project/${projectId}/team`">
       <v-list-tile-action>
         <v-icon>fas fa-users</v-icon>
       </v-list-tile-action>
@@ -53,16 +45,8 @@
         <v-list-tile-title>Team</v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
-    <!-- <v-list-tile :to="`/project/${projectId}/chats`">
-      <v-list-tile-action>
-        <v-icon>fas fa-comments</v-icon>
-      </v-list-tile-action>
-      <v-list-tile-content>
-        <v-list-tile-title>Chats</v-list-tile-title>
-      </v-list-tile-content>
-    </v-list-tile> -->
     <v-divider />
-    <v-list-tile to="/about">
+    <v-list-tile v-if="project.name" to="/about">
       <v-list-tile-action>
         <v-icon color="grey darken-1">fas fa-hand-point-right</v-icon>
       </v-list-tile-action>
@@ -78,6 +62,14 @@ export default {
   data () {
     return {
       projectId: 123
+    }
+  },
+  computed: {
+    project () {
+      return this.$store.state.project || {}
+    },
+    me () {
+      return this.$store.getters.me
     }
   }
 }
