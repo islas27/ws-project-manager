@@ -125,9 +125,9 @@ export default {
       this.members
         .filter(member => currentMembers.indexOf(member) === -1)
         .forEach(newMember => {
-          this.$store.commit('addTeamMembers', this.search.find(e => e.id = newMember))
-        });
-      this.$store.commit('updateProject', {name: this.name, description: this.description})
+          this.$store.commit('addTeamMembers', this.search.find(e => e.id === newMember))
+        })
+      this.$store.commit('updateProject', { name: this.name, description: this.description })
     }
   }
 }

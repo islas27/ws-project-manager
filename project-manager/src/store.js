@@ -46,6 +46,10 @@ export default new Vuex.Store({
     addProject (state, project) {
       const key = generateKey()
       Vue.set(state.projectList, key, project)
+      Vue.set(state, 'project', { ...project, id: key })
+    },
+    selectProject (state, projectId) {
+      Vue.set(state, 'project', { ...state.projectList[projectId], id: projectId })
     },
     updateProject (state, payload) {
       const project = { ...state.project, ...payload }

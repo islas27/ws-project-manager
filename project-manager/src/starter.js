@@ -7,7 +7,6 @@ export default {
     email: 'john.doe@gmail.com',
     avatar: 'https://placeimg.com/640/640/people/'
   },
-  userSettings: {},
   projectList: {
     '123': {
       name: 'My Start-up',
