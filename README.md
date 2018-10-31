@@ -3,13 +3,12 @@ Workshop to develop quickly a full fledged on top of Google Firebase
 
 ## Setup Instrutions
 
-1. Install latest node v10 (Currently 10.9.0), alternatively, run `nvm install && nvm use` if you have nvm installed.
-2. Clone this repo, checkout the master branch
+1. Clone this repo, checkout the master branch
+2. Install latest node v10 (Currently 10.9.0), alternatively, run `nvm install && nvm use` if you have nvm installed.
 3. Go to the `project-manager` folder and `npm install & npm run build`
     - Feel free to explore the demo using `npm run serve`
 4. Register in https://firebase.google.com/
 5. Make the setup to upload files to the hosting server:
-    - Install latest node v10 (Currently 10.9.0), alternatively, run `nvm install && nvm use` if you have nvm installed.
     - Install firebase tools: `npm install -g firebase-tools`
     - Run `firebase login`
     - Run `firebase init`
@@ -20,7 +19,7 @@ Workshop to develop quickly a full fledged on top of Google Firebase
 
 ## FE composition
 
-The FE application is made using vue-cli. You can run `vue ui` inside the `project-manager` to see more information about the FE application, control dependencies, and see build analytics.
+The FE application is made using vue-cli. You can run `vue ui` inside the `project-manager` to see more information about the application, control dependencies, and see build analytics.
 
 For code styling & linting it uses the `standard` style.
 
