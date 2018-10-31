@@ -118,6 +118,16 @@ export default new Vuex.Store({
           console.log(error)
         })
     },
+    loginWithGoogle ({ state, dispatch }) {
+      const auth = state.auth
+      const provider = new auth.GoogleAuthProvider()
+      auth().signInWithPopup(provider)
+        .then(function () {
+          dispatch('trackUserSession')
+        }).catch(function (error) {
+          console.log(error)
+        })
+    },
     logout ({ state, commit }) {
       const auth = state.auth
       auth().signOut()
