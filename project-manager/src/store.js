@@ -1,5 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import firebase from 'firebase/app'
+import config from './config'
+require('firebase/auth')
+// require('firebase/firestore')
+
+firebase.initializeApp(config)
 
 Vue.use(Vuex)
 
@@ -7,6 +13,7 @@ const generateKey = () => Math.random().toString(36).substr(2, 5)
 
 export default new Vuex.Store({
   state: {
+    auth: firebase.auth,
     user: {},
     userSettings: {},
     projectList: {},

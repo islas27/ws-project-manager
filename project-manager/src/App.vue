@@ -26,14 +26,15 @@
 
 <script>
 import NavigationDrawer from '@/components/NavigationDrawer'
-import dummyData from '@/starter'
+// import dummyData from '@/starter'
 export default {
   name: 'App',
   components: { NavigationDrawer },
-  beforeMount () {
-    // Loading dummydata
-    this.$store.commit('devData', dummyData)
-  },
+  // Remove dev data from the app, lets begin plugin in Firebase
+  // beforeMount () {
+  //   // Loading dummydata
+  //   this.$store.commit('devData', dummyData)
+  // },
   computed: {
     me () {
       return this.$store.state.user || {}
